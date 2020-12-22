@@ -1,4 +1,4 @@
-WAS(Web Application Server)
+WAS(Web Application Server)와 web container
 
 웹 어플리케이션 서버는 어플리케이션을 서비스하는 서버이다.
 
@@ -29,3 +29,20 @@ fail-over, 로드 밸런싱 등을 수행하며, 그렇게 하므로써 개발�
 웹어플리케이션은 어플리케이셔 서버 위에서 구동한다. 이러한 어플리케이션들은 was가 지원하는 언어로 작성되어 있으며
 was가 제공하는 런타임 라이브러리와 components들을 호출한다.
 
+----
+
+web container (= servlet container)
+
+웹 컨테이너는 웹서버의 구성물로서 자카르타 서블릿과 상호작용한다. 이 컨테이너는 서블릿의 라이프사이클을
+관리하며, 특정 서블릿에 URL을 매핑하고, URL requester가 올바른 접근권한을 갖게 한다.
+
+웹컨테이너는 서블릿, JSP 파일에 대한 리퀘스트를 관리한다. 이는 서버사이드 코드를 가진 다른 유형의 파일에도
+동일하게 적용된다. 웹컨테이너는 servlet의 instance를 생성하고, 서블릿을 로드/언로드하며, 
+request/ response object를 생성하고 관리하며, 그 외의 서블릿 관련 업무를 수행한다.
+
+웹컨테이너는 jakarta EE 구조의 web component 규정을 구현한다. 이 구조는 추가적인 웹 컴포넌트에 대한
+runtime environment를 구체화 한다. 여기서 말하는 추가적인 웹 컴포넌트는 security, concurrency,
+lifecycle mgmt., transaction, deployment과 그 외의 서비스들을 포함한다.
+
+오픈소스 중에서는 톰캣이 대표적이다. 
+구체화한다 
