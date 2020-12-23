@@ -21,3 +21,23 @@ TCP client
 2. 서버연결. 서버의 InetSocketAddress를 파라미터로 하는 connect() 메소드로 서버에 연결을 시도한다.
 3. Write 소켓을 통해 아웃풋 스트림을 내보낸다
 4. read 소켓을 통해 인풋스트림을 읽는다
+
+
+
+공통 I/O
+
+: Once you create an instance of the Socket class successfully,
+you can use it to send and receive streams of bytes.
+To send byte Streams, you must first call the Socket class's
+getOutputStream method to obtain a java.io.OutputStream object.
+To send text to remote application, you often want to construct
+a java.io.PrintWriter object from the OutputStream object returned.
+
+To receive byte streams from the other end of the connection,
+you call the Socket class's getInputStream method that returns a
+java.io.InputStream.
+
+
+https://github.com/gg-daddy/ebooks/blob/master/How%20Tomcat%20Works%202.pdf
+
+
