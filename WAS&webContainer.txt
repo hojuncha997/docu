@@ -45,4 +45,85 @@ runtime environment를 구체화 한다. 여기서 말하는 추가적인 웹 �
 lifecycle mgmt., transaction, deployment과 그 외의 서비스들을 포함한다.
 
 오픈소스 중에서는 톰캣이 대표적이다. 
-구체화한다 
+
+
+---
+
+WAS의 역할
+	- WAS = Web server + Web container
+	- web server의 기능들을 구조적으로 분리하여 처리하고자 하는 목적으로 제시됨
+	- 분산 트랜젝션, 보안, 메시징, 쓰레드처리 등의 기능을 처리하는 분산환경에서 사용됨.
+	- 주로 DB 서버와 함께 수행됨
+	- 현재는 WAS가 가지고 있는 Web server도 정적인 컨텐츠를 처리하는 데 있어 성능상 차이 없음.
+	
+WAS의 주요 기능
+	- 프로그램 실행 환경과 DB 접속 기능 제공
+	- 여러 개의 트랜젝션(논리적 작업단위) 관리 기능
+	- 업무를 처리하는 비즈니스 로직 수행
+
+WAS의 예: 톰캣
+
+WAS가 필요한 이유
+	- 웹 페이지에는 정적/동적 컨텐츠가 모두 존재하기 때문에 사용자의 요청에 맞는 적절한 동적 컨텐츠를 만들어 제공해야함.
+	- 이 때 web server만을 이용한다면 사용자가 원하는 요청에 대한 결과값을 모두 미리 만들어 놓고 서비스 해야함.
+	- 그렇게 하기에는 자원이 부족함.
+	- 따라서 WAS를 통해 요청에 맞는 데이터를 DB에서 가져와서 비즈니스 로직에 맞게 수시로 결과를 만들어 제공한다면
+		자원을 효율적으로 사용할 수 있음. (WAS는 DB조회가 가능하기 떄문임)
+		
+WAS가 웹서버의 기능까지 모두 수행하지 않는 이유.
+ - 자원 이용의 효율성 및 장애 극복, 배포 및 유지보수의 편의성을 위해
+ 
+	1) 기능을 분리하여 서버 부하 방지
+		- WAS는 DB조회 등 다양한 로직을 처리하기 때문에 단순한 정적 컨텐츠는 web server에서 빠르게 서비스하는 것이 나음.
+		- WAS는 기본적으로 동적 컨텐츠를 제공하기 위해 존재하는 서버임.
+		- 정적 컨텐츠까지 서비스하다가 본연의 역할에 충실하지 못할 수 있음
+		- 결과적으로 페이지 서비스 시간이 늘어나게 됨.
+		
+	2) 물리적으로 분리하여 보안 강화
+		- SSL에 대한 암복호화 처리에 Web server 이용
+	
+	3) 여러 대의 WAS를 연결가능
+		- Load Balancing을 위해 web server 사용
+		- fail over(장애극복), fail back 처리에 유리
+		- 여러 서버를 사용하는 대용량 웹 어플리케이션의 경우 WAS와 web server를 분리하여
+			장애에도 무중단 운영이 가능함.
+		- 오류가 발생한 WAS를 사용하지 못하도록 web server가 이용을 막을 수 있음. 그 뒤에 해당 was 수리
+		
+	4) 여러 웹 어플리케이션 서비스 가능
+		- 예를 들어, 하나의 서버에서 PHP 어플리케이션과 JAVA 어플리케이션을 함께 사용할 수 있음.
+		
+---
+
+웹서버를 WAS 전에 두고 필요한 WAS들을 웹서버에 플러그인 형태로 설정하면 더욱 효율적인 분산처리 가능
+
+: client ==> web server ==> WS ==> DB
+
+1) 웹서버가 웹브라우저(클라이언트)로부터 HTTP 요청을 받음
+2) 클라이언트의 리퀘스트를 WAS에 보냄
+3) WAS는 요청과 관련된 서블릿을 메모리에 올림.
+4) WAS는 web.xml을 참조하여 해당 서블릿에 대한 쓰레드를 생성함(Thread pool 이용)
+
+5) HttpServletRequetst와 HttpServletResponnse 객체를 생성하여 servlet에 전달
+	- thread는 servlet의 service() 메소드를 호출
+	- service() 메서드는 요청에 맞게 doGet() 또는 doPost() 메서드를 호출한다.
+	- protected doGet(HttpServletRequest request, HttpServletResponse response)
+
+6) doGet()또는 doPost()메서드는 인자에 맞게 생성된 적절한 동적 페이지를 Response 객체에 담아 Was에 전달
+7) WAS는 Response 객체를 HttpResponse 형태로 바꾸어 Web server에 전달함
+8) 생성된 Thread를 종료하고, HttpServletRequest와 HttpServletResponse 객체를 제거한다.
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
