@@ -1,0 +1,46 @@
+VMbox를 사용하여 centos7을 운영체제로 하는 가상머신을 생성했다.
+호스트인 window에서 putty를 이용하여 ssh 접속을 시도하였으나 실패했다.
+ssh 쉘에 나타나는 사유는 타임아웃이었다.
+
+결과부터 이야기하자.
+
+가상머신의 네트워크 설정을 잘못한 것이 문제였다. 가상머신의 네트워크 방식을 NAT으로 해 놓고 있었던 것이다.
+
+이 방식은 호스트가 공유기처럼 작동하는 방식이다. 호스트 자신이 가진 사설망을 또 한 번 나누어 가상머신에 배분하는 방식이다.
+애초에 호스트가 가지고 있던 ip도 사설망 ip인데, 이것을 10.xxx.xxx.xxx 방식의 ip로 나누어 가상머신에게 배분한다.
+
+따라서 VMbox의 설정에 가서   
+
+
+
+
+https://www.virtualbox.org/manual/ch06.html#network_nat_service
+
+-NAT Network. A NAT network is a type of internal network that allows outbound connections
+
+:The Network Address Translation (NAT) service works in a similar way to a home router, 
+grouping the systems using it into a network and preventing systems outside of this network
+ from directly accessing systems inside it, but letting systems inside communicate with 
+ each other and with systems outside using TCP and UDP over IPv4 and IPv6.
+  
+
+
+
+ https://www.virtualbox.org/manual/ch06.html#network_bridged
+ 
+- Bridged networking. This is for more advanced networking needs,
+ such as network simulations and running servers in a guest. When enabled,
+Oracle VM VirtualBox connects to one of your installed network cards and exchanges network packets directly,
+circumventing your host operating system's network stack.
+
+: With bridged networking, Oracle VM VirtualBox uses a device driver on your host system that 
+filters data from your physical network adapter. This driver is therefore called a net filter driver.
+ This enables Oracle VM VirtualBox to intercept data from the physical network and inject data into it,
+ effectively creating a new network interface in software. When a guest is using such a new software interface,
+ it looks to the host system as though the guest were physically connected to the interface using a network cable.
+ The host can send data to the guest through that interface and receive data from it.
+ This means that you can set up routing or bridging between the guest and the rest of your network.
+
+
+ 
+ 

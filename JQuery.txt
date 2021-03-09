@@ -1,0 +1,12 @@
+1. 클라이언트의 DOM 조작을 쉽게 할 수 있도록 작성된 Javascript Library
+2. 2006년도 존 레식
+3. DOM 탐색 / 수정
+4. 이벤트
+5. cross-browser
+6. ajax / json 지원
+7. 플러그인을 통한 확장성
+
+2006 v1.0
+	 v1.3 <- sizzle.js embeded(크로스 브라우징 때문에 코드가 지저분해지고 성능저하)
+	 v2.0 : <= IE8 지원 x
+2016 v3.0 : ES6 비동기 지원
